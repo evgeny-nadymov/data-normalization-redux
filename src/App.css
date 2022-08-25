@@ -1,0 +1,126 @@
+#root {
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pages {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.campaign {
+  display: table-row;
+}
+
+.campaign-name {
+  display: table-cell;
+}
+
+.campaigns-list-wrapper {
+  flex: 1 1 70%;
+  overflow-y: auto;
+}
+
+.campaigns-list {
+  display: table;
+  width: 100%;
+}
+
+.campaigns-list-columns {
+  display: table-header-group;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background: white;
+}
+
+.campaigns-list-name-column {
+  display: table-cell;
+}
+
+.campaigns-list-author-column {
+  display: table-cell;
+}
+
+.campaigns-list-status-column {
+  display: table-cell;
+}
+
+.campaigns-list-commands-column {
+  display: table-cell;
+}
+
+.campaign-type {
+  display: table-cell;
+}
+
+.campaign-commands {
+  display: table-cell;
+}
+
+.campaign-user {
+  display: table-cell;
+}
+
+.commands {
+  display: flex;
+}
+
+.edit-campaign {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-campaign-id,
+.edit-campaign-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.search {
+  display: flex;
+}
