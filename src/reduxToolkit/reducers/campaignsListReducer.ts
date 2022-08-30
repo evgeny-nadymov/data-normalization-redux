@@ -1,12 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Draft } from "@reduxjs/toolkit";
 import { Campaign, Template, User } from "../../data";
-import { createCampaign, updateCampaign, fetchCampaigns, searchCampaigns } from "../thunk";
-
-export type UpdateUserNamePayload = {
-    userId: string,
-    firstName: string,
-    lastName: string,
-};
+import { createCampaign, updateCampaign, fetchCampaign, fetchCampaigns, searchCampaigns } from "../thunk";
 
 type SearchResults = {
     text: string;
@@ -47,6 +41,26 @@ const initialState: State = {
 
     search: { text: "" },
     prevSearch: undefined,
+}
+
+function buildStateFromCampaigns(state: Draft<State>, campaigns: Campaign[]) {
+    const userIds: string[] = [];
+
+    state.campaigns.entities = {};
+    state.templates.entities = {};
+    state.users.entities = {};
+    campaigns.forEach((x) => {
+        state.campaigns.entities[x.id] = x;
+        x.templates.forEach((t) => {
+            state.templates.entities[t.id] = t;
+        });
+        userIds.push(x.author.id);
+        state.users.entities[x.author.id] = x.author;
+    });
+
+    state.users.ids = userIds;
+    state.campaigns.ids = campaigns.map((x) => x.id);
+    state.templates.ids = [...Object.keys(state.templates.entities)];
 }
 
 const campaignsListSlice = createSlice({
@@ -102,19 +116,21 @@ const campaignsListSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchCampaigns.fulfilled, (state, action) => {
             const { payload: campaigns } = action;
-            const userIds: string[] = [];
 
-            campaigns.forEach((x) => {
-                state.campaigns.entities[x.id] = x;
-                x.templates.forEach((t) => {
-                    state.templates.entities[t.id] = t;
-                });
-                userIds.push(x.author.id);
-                state.users.entities[x.author.id] = x.author;
+            buildStateFromCampaigns(state, campaigns);
+        });
+        builder.addCase(fetchCampaign.fulfilled, (state, action) => {
+            const { payload: campaign } = action;
+
+            state.campaigns.entities[campaign.id] = campaign;
+            campaign.templates.forEach((t) => {
+                state.templates.entities[t.id] = t;
             });
+            state.users.entities[campaign.author.id] = campaign.author;
 
-            state.users.ids = userIds;
-            state.campaigns.ids = campaigns.map((x) => x.id);
+            // state.users.ids = userIds;
+            // state.campaigns.ids = campaigns.map((x) => x.id);
+            // state.templates.ids = templateIds;
         });
         builder.addCase(searchCampaigns.fulfilled, (state, action) => {
             const { payload: ids } = action;
@@ -152,7 +168,6 @@ export const {
     addCampaign,
     deleteCampaign,
     updateSearch,
-    // searchCampaigns,
 } = campaignsListSlice.actions;
 
   export default campaignsListSlice.reducer;

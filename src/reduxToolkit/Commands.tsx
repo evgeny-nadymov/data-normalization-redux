@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { updateCampaignName, updateIdsRef, updateUserName } from "./reducers/campaignsListReducer";
 import { useAppDispatch } from "./store";
+import { fetchCampaign, fetchCampaigns } from "./thunk";
 const getRandomFruitsName = require("random-fruits-name");
 const generateRandomAnimalName = require("random-animal-name-generator");
 
@@ -10,6 +11,14 @@ const Commands: FC = () => {
     // const handleClick = () => {
     //     dispatch(updateIdsRef({}));
     // };
+
+    const handleFetchCampaign = () => {
+        dispatch(fetchCampaign("campaign1"));
+    };
+
+    const handleFetchCampaigns = () => {
+        dispatch(fetchCampaigns());
+    };
 
     const handleUserNameChange = () => {
         const animalName = generateRandomAnimalName().split(' ');
@@ -30,8 +39,16 @@ const Commands: FC = () => {
     return (
         <div className="commands">
             {/* <button onClick={handleClick}>update ids ref</button> */}
-            <button onClick={handleUserNameChange}>update user name</button>
-            <button onClick={handleCampaignNameChange}>update campaign name</button>
+            <div>
+                Data Fetching
+                <button onClick={handleFetchCampaign}>refetch campaign</button>
+                <button onClick={handleFetchCampaigns}>refetch campaigns</button>
+            </div>
+            <div>
+                Updates
+                <button onClick={handleCampaignNameChange}>update campaign name</button>
+                <button onClick={handleUserNameChange}>update author</button>
+            </div>
         </div>
     );
 };
