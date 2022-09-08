@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import campaignsList from './reducers/campaignsListReducer';
 import editCampaign from './reducers/editCampaignReducer';
+import magicPage from './reducers/magicPageReducer';
 
 export const store = configureStore({
   reducer: {
     campaignsList,
     editCampaign,
+    magicPage,
   },
 })
 
